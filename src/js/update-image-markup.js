@@ -23,8 +23,9 @@ imgContainer.addEventListener('click', onOpenModalImg);
 
 loadMore.style.display = 'none';
 
-function onSearch(e) {
-   console.log(newsApiService.query);
+async function onSearch(e) {
+  try {
+  
     newsApiService.query = e.target.value.trim();
 
      if (newsApiService.query.length < 1 || newsApiService.query === ' ') {
@@ -35,7 +36,7 @@ function onSearch(e) {
     }
    
     newsApiService.resetPage();
-    newsApiService.fetchImages()
+    await newsApiService.fetchImages()
         .then(hits => {
             if (hits.length === 0) {
                return  notice({
@@ -49,7 +50,36 @@ function onSearch(e) {
             appendHitsMarkup(hits)
             } 
         })
-        .catch(errorInfo)
+  }
+  catch {
+    errorInfo()
+  }
+    //  console.log(newsApiService.query);
+    // newsApiService.query = e.target.value.trim();
+
+    //  if (newsApiService.query.length < 1 || newsApiService.query === ' ') {
+    //     return  notice({
+    //         text: 'enter your query',
+    //         delay: 3000,
+    //     }) ;
+    // }
+   
+    // newsApiService.resetPage();
+    // newsApiService.fetchImages()
+    //     .then(hits => {
+    //         if (hits.length === 0) {
+    //            return  notice({
+    //         text: 'Please enter a more specific query!',
+    //         delay: 3000,
+    //         }) ; 
+    //         }
+    //         else {
+    //             // loadMore.style.display = 'block';
+    //         clearContainer();
+    //         appendHitsMarkup(hits)
+    //         } 
+    //     })
+        // .catch(errorInfo)
 }
 
 function onLoadMore() {
@@ -72,7 +102,7 @@ function clearContainer() {
 }
 
 function onOpenModalImg(e) {
-   console.log(e);
+  //  console.log(e);
   if (e.target.nodeName !== 'IMG') {
       return;
   }
@@ -103,3 +133,34 @@ const observer = new IntersectionObserver(onEntry, {
   rootMargin: '150px',
 });
 observer.observe(sentinel);
+
+
+// function getFruit(name) {
+//   const fruits = {
+//     strawberry: '🍓',
+//     kiwi: '🥝 ',
+//     apple: '🍎',
+//   };
+
+//   return new Promise((resolve, reject) =>
+//     setTimeout(() => resolve(fruits[name]), 500),
+//   );
+// }
+// async function aMakeSmoothie() {
+//   try {
+//     console.time('aMakeSmoothie');
+//     const apple = getFruit('apple');
+//     const kiwi = getFruit('kiwi');
+//     const berry = getFruit('strawberry');
+
+//     // const fruits = await Promise.all([apple, kiwi, berry]);
+//     // console.log(fruits);
+//     console.timeEnd('aMakeSmoothie');
+
+//     // return fruits;
+//   } catch (error) {
+//     console.log('Ошибка');
+//   }
+// }
+
+// aMakeSmoothie();

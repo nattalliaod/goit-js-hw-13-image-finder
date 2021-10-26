@@ -10,23 +10,30 @@ export default class NewsApiService {
     this.page = 1;
 
   }
-  fetchImages() {
+  async fetchImages() {
     const url = `${BASE_URL}?image_type=photo&orientation=horizontal&q=${this.searchQuery}&page=${this.page}&per_page=12&key=${API_KEY}`
-    return fetch(url)
-      .then(response => {
-            if (response.status === 200) {
-                return response.json();
-            }
-        })
-      .then(({hits}) => {
-        this.incrementPage();
-            console.log(this);
-          return hits;
+    
+    const response = await fetch(url);
+    const searchQuery = await response.json();
+    const searchImgage = searchQuery.hits;
+    this.incrementPage();
+   
+    return searchImgage
+    // return fetch(url)
+    //   .then(response => {
+    //         if (response.status === 200) {
+    //             return response.json();
+    //         }
+    //     })
+    //   .then(({hits}) => {
+    //     this.incrementPage();
+    //         console.log(this);
+    //       return hits;
         
-    })
+    // })
     
   }
-  
+ 
   incrementPage() {
     this.page += 1;
   }
@@ -43,3 +50,5 @@ export default class NewsApiService {
     this.searchQuery = newQuery;
   }
 }
+// const newsApiService = new NewsApiService();
+// newsApiService.fetchImages() 
